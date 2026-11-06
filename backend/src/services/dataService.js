@@ -22,7 +22,7 @@ async function isSafeUrl(urlString) {
     }
 }
 
-// --- 2. REMOTE FETCH ---
+// --- REMOTE FETCH ---
 async function fetchRemote(url, timeoutMs = 5000) {
     const isSafe = await isSafeUrl(url);
     if (!isSafe) throw new AppError('Access to internal/private networks is blocked', 403);
@@ -41,7 +41,7 @@ async function fetchRemote(url, timeoutMs = 5000) {
     } finally { clearTimeout(timer); }
 }
 
-// --- 3. CSV PARSER ---
+// --- CSV PARSER ---
 function parseCSV(text) {
     const lines = text.trim().split(/\r?\n/).filter(Boolean);
     if (lines.length < 2) throw new AppError('CSV has no data rows', 422);
@@ -71,7 +71,7 @@ function parseCSV(text) {
     });
 }
 
-// --- 4. KEY DETECTION ---
+// --- KEY DETECTION  ---
 function parseDate(value) {
     if (value == null) return null;
     if (value instanceof Date) return Number.isNaN(value.getTime()) ? null : value;
@@ -119,7 +119,7 @@ function detectCategoryKey(records, ignoreKeys = []) {
     return best;
 }
 
-// --- 5. CHART DOWNSAMPLER (Prevents browser freezing) ---
+// --- CHART DOWNSAMPLER Freezing Fix ---
 function downsampleTrend(data, maxPoints = 300) {
     if (data.length <= maxPoints) return data;
     const step = Math.ceil(data.length / maxPoints);
@@ -175,7 +175,7 @@ export async function ingestFromSource({ url, type }) {
     return buildAnalytics(sourceId, url, type);
 }
 
-// --- 7. ANALYTICS BUILDER ---
+// --- ANALYTICS BUILDER ---
 export async function buildAnalytics(sourceId, sourceUrl, sourceType) {
     const db = getDb();
     const sourceRecords = db.records.filter(r => r.source_id === sourceId);
@@ -197,25 +197,29 @@ export async function buildAnalytics(sourceId, sourceUrl, sourceType) {
         .map(([name, value]) => ({ name, value }))
         .sort((a, b) => b.value - a.value);
 
-    // Single-pass KPIs
-    let sum = 0, max = 0;
-    const values = [];
-    for (const r of sourceRecords) {
-        const v = r.value;
-        sum += v;
-        if (v > max) max = v;
-        values.push(v);
-    }
+     //data calc
+  const total = sourceRecords.length;
+  
+  // Count rows with missing or invalid values
+  const invalidRows = sourceRecords.filter(r => 
+    r.value === null || r.value === undefined || Number.isNaN(r.value)
+  ).length;
+  
+  // Error Rate
+  const errorRate = total === 0 ? 0 : Number(((invalidRows / total) * 100).toFixed(2));
 
-    const total = sourceRecords.length;
-    const mean = sum / total;
-    const halfIdx = Math.floor(total / 2);
-    const firstHalf = values.slice(0, halfIdx).reduce((a, b) => a + b, 0) / Math.max(halfIdx, 1);
-    const secondHalf = values.slice(halfIdx).reduce((a, b) => a + b, 0) / Math.max(total - halfIdx, 1);
-    const growth = firstHalf === 0 ? 0 : ((secondHalf - firstHalf) / Math.abs(firstHalf)) * 100;
+  // Calculate valid values for the rest of the math
+  const validValues = sourceRecords.map(r => r.value).filter(v => v !== null && !Number.isNaN(v));
+  const sum = validValues.reduce((a, b) => a + b, 0);
+  const mean = sum / validValues.length;
+  const max = Math.max(...validValues, 0);
+  
+  const halfIdx = Math.floor(total / 2);
+  const firstHalf = validValues.slice(0, halfIdx).reduce((a, b) => a + b, 0) / Math.max(halfIdx, 1);
+  const secondHalf = validValues.slice(halfIdx).reduce((a, b) => a + b, 0) / Math.max(validValues.length - halfIdx, 1);
+  const growth = firstHalf === 0 ? 0 : ((secondHalf - firstHalf) / Math.abs(firstHalf)) * 100;
 
-    const systemLoad = max === 0 ? 0 : Math.min(100, Math.round((mean / max) * 100));
-    const errorRate = Math.max(0, Math.min(100, 100 - Math.abs(growth) * 2));
+  const systemLoad = max === 0 ? 0 : Math.min(100, Math.round((mean / max) * 100));
 
     return {
         meta: { source: sourceUrl, type: sourceType, sourceId, totalRecords: total, ingestedAt: new Date().toISOString() },
@@ -227,7 +231,7 @@ export async function buildAnalytics(sourceId, sourceUrl, sourceType) {
     };
 }
 
-// --- 8. MOCK DATA ---
+// --- MOCK DATA ---
 export async function buildMockDataset() {
     const db = getDb();
     const SOURCE_ID = 'mock://demo-dataset';
