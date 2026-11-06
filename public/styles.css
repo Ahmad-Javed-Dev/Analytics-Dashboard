@@ -144,7 +144,7 @@ select {
     left: 50%; transform: translateX(-50%);
     z-index: 1000; display: flex; 
     align-items: center; 
-    gap: 5rem;
+    gap: 2rem;
     padding: 12px 28px; 
     background: #e9c078;
     backdrop-filter: blur(13px); 
