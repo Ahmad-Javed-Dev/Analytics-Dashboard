@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics — Live Data Workspace</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <a class="skip-link" href="#dashboard">Skip to dashboard</a>
+    <!-- Target Cursor -->
+    <div class="custom-cursor" id="custom-cursor">
+        <div class="cursor-ring"></div>
+        <div class="cursor-dot"></div>
+        <div class="cursor-label"></div>
+    </div>
+
+    <header class="header" aria-label="Workspace header">
+        <div class="header-inner">
+            <div class="brand">
+                <div class="brand-icon"><i data-lucide="bar-chart-3"></i></div>
+                <div>
+                    <div class="brand-title">Analytics</div>
+                    <div class="brand-sub">Live data workspace</div>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <div class="status-pill" role="status" aria-live="polite">
+                    <span id="status-dot" class="status-dot"></span>
+                    <span id="status-text" class="status-text">No source</span>
+                </div>
+
+                <button id="theme-toggle" class="icon-btn" data-cursor-label="Toggle Theme"
+                    aria-label="Toggle color theme" type="button">
+                    <i class="icon-moon" data-lucide="moon"></i>
+                    <i class="icon-sun" data-lucide="sun"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div id="status-toast" class="status-toast hidden" role="status" aria-live="polite">
+        <i id="toast-icon" data-lucide="loader-2"></i>
+        <div>
+            <div id="toast-title" class="toast-title">Loading workspace…</div>
+            <div id="toast-message" class="toast-message"></div>
+        </div>
+    </div>
+
+    <main class="main" id="main-content">
+        <div id="empty-state" class="empty-state hidden">
+            <i data-lucide="wifi-off"></i>
+            <div>Waiting for data source…</div>
+        </div>
+
+        <div id="dashboard" class="hidden" tabindex="-1">
+            <div class="section-header reveal" data-delay="0">
+                <div>
+                    <h1 id="page-title" class="page-title">Overview</h1>
+                    <p id="page-subtitle" class="page-subtitle">Loading…</p>
+                </div>
+                <div class="range-picker" aria-label="Chart time range">
+                    <button type="button" class="range-btn" data-range="24h" data-cursor-label="24h">24h</button>
+                    <button type="button" class="range-btn active" data-range="7d" data-cursor-label="7d">7d</button>
+                    <button type="button" class="range-btn" data-range="30d" data-cursor-label="30d">30d</button>
+                    <button type="button" class="range-btn" data-range="all" data-cursor-label="All">All</button>
+                </div>
+            </div>
+
+            <div class="source-toolbar reveal" data-delay="1">
+                <div class="source-intro">
+                    <div class="source-label">Data source</div>
+                    <div class="source-description">Connect a URL to replace the demo workspace.</div>
+                </div>
+                <form id="data-link-form" class="data-link" aria-label="Connect a data source">
+                    <div class="data-link-icon"><i data-lucide="link"></i></div>
+                    <input type="url" id="data-url" placeholder="https://api.example.com/data" autocomplete="url"
+                        aria-label="Data source URL">
+                    <select id="data-type" class="data-type-select" aria-label="Data source type">
+                        <option value="auto">Auto-detect</option>
+                        <option value="json">JSON</option>
+                        <option value="csv">CSV</option>
+                        <option value="rest">REST API</option>
+                    </select>
+                    <button type="submit" id="connect-btn" class="btn btn-primary" data-cursor-label="Connect">
+                        <span class="btn-label">Connect</span>
+                    </button>
+                </form>
+            </div>
+
+            <div class="charts-row">
+                <div class="card glass-panel reveal" data-delay="2">
+                    <div class="card-head">
+                        <div>
+                            <div class="card-title">Trend</div>
+                            <div class="card-sub">Normalized value over time</div>
+                        </div>
+                        <div class="live-badge">
+                            <span class="live-dot"></span> Live
+                        </div>
+                    </div>
+                    <div class="chart-wrap">
+                        <canvas id="trend-chart" role="img"
+                            aria-label="Trend line chart showing normalized values over time">Your browser does not
+                            support canvas charts.</canvas>
+                    </div>
+                </div>
+
+                <div id="kpi-grid" class="kpi-grid reveal" data-delay="3"></div>
+            </div>
+
+            <div class="insight-row">
+                <div class="card glass-panel reveal" data-delay="3">
+                    <div class="card-head">
+                        <div>
+                            <div class="card-title">Breakdown</div>
+                            <div class="card-sub">Distribution by category</div>
+                        </div>
+                    </div>
+                    <div class="chart-wrap chart-wrap-sm">
+                        <canvas id="breakdown-chart" role="img"
+                            aria-label="Doughnut chart showing distribution by category">Your browser does not support
+                            canvas charts.</canvas>
+                        <div class="donut-center">
+                            <div class="donut-label">Total</div>
+                            <div id="donut-total" class="donut-value">0</div>
+                        </div>
+                    </div>
+                    <ul id="breakdown-legend" class="legend"></ul>
+                </div>
+
+                <div class="card glass-panel table-card reveal" data-delay="4">
+                    <div class="table-head">
+                        <div class="card-title">Records</div>
+                        <input type="search" id="table-search" class="search-input" placeholder="Search records…"
+                            aria-label="Search records">
+                    </div>
+                    <div class="table-scroll">
+                        <table class="table">
+                            <caption class="sr-only">Connected data records</caption>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Timestamp</th>
+                                    <th>Category</th>
+                                    <th class="text-right">Value</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body"></tbody>
+                        </table>
+                    </div>
+                    <div class="table-foot">
+                        <div class="page-info">
+                            <span id="table-sub">0 rows</span> | <span id="table-page-info">Page 1 of 1</span>
+                        </div>
+                        <div class="pager">
+                            <button type="button" id="prev-page" class="icon-btn small" aria-label="Previous page"
+                                data-cursor-label="Prev"><i data-lucide="chevron-left"></i></button>
+                            <button type="button" id="next-page" class="icon-btn small" aria-label="Next page"
+                                data-cursor-label="Next"><i data-lucide="chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer reveal" data-delay="5">
+        Static analytics workspace · <span id="footer-year"></span>
+    </footer>
+
+    <script type="module" src="app.js"></script>
+</body>
+
+</html>
