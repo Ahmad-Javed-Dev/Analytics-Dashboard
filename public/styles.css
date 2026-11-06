@@ -139,23 +139,38 @@ select {
     color: var(--text-primary);
 }
 
+/* =========================================
+   SLEEK APPLE-STYLE HEADER
+   ========================================= */
 .header {
-    position: fixed; top: 20px; 
-    left: 50%; transform: translateX(-50%);
-    z-index: 1000; display: flex; 
-    align-items: center; 
-    gap: 2rem;
-    padding: 12px 28px; 
-    background: #e9c078;
-    backdrop-filter: blur(13px); 
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(0, 0, 0, 0.08); 
-    border-radius: 50px;
-    box-shadow:0 4px 16px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    height: 64px;
+    display: flex;
+    justify-content: center;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid var(--glass-border);
+    border-radius: 0;
+    box-shadow: none;
+    transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .header-inner {
-    padding: 20px 26px; box-shadow: var(--shadow-lg); border: 2px solid var(--border)
+    width: 100%;
+    max-width: 1360px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 0 24px;
+    box-shadow: none;
+    border: none;
+    background: transparent;
 }
 
 .brand {
@@ -168,17 +183,16 @@ select {
 .brand-icon {
     display: grid;
     place-items: center;
-    width: 38px;
-    height: 38px;
-    border: 1px solid rgba(255, 255, 255, .16);
-    border-radius: 11px;
-    background: linear-gradient(145deg, rgba(56, 50, 50, 0.16), rgba(24, 21, 21, 0.05));
-    color: var(--accent-sungold);
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: var(--accent-purple-soft);
+    color: var(--accent-purple);
 }
 
 [data-theme="dark"] .brand-icon {
+    background: rgba(182, 128, 209, 0.15);
     color: var(--accent-purple);
-
 }
 
 .brand-icon svg {
@@ -192,7 +206,7 @@ select {
 
 .brand-sub {
     margin-top: 3px;
-    color: rgba(255, 250, 241, .59);
+    color: var(--text-muted);
     font-size: 10px;
     letter-spacing: .06em;
     text-transform: uppercase;
@@ -212,15 +226,15 @@ select {
     align-items: center;
     gap: 5px;
     padding: 4px;
-    border: 1px solid rgba(255, 255, 255, .14);
+    border: 1px solid var(--glass-border);
     border-radius: 12px;
-    background: rgba(255, 255, 255, .07);
+    background: var(--glass-bg);
 }
 
 .data-link-icon {
     display: flex;
     padding: 0 7px 0 9px;
-    color: rgba(255, 255, 255, .55);
+    color: var(--text-muted);
 }
 
 .data-link-icon svg {
@@ -234,28 +248,28 @@ select {
     outline: 0;
     padding: 8px 3px;
     background: transparent;
-    color: #fff;
+    color: var(--text-primary);
     font-size: 12px;
 }
 
 .data-link input::placeholder {
-    color: rgba(255, 255, 255, .4);
+    color: var(--text-muted);
 }
 
 .data-type-select {
     max-width: 112px;
     border: 0;
-    border-left: 1px solid rgba(255, 255, 255, .13);
+    border-left: 1px solid var(--glass-border);
     outline: 0;
     padding: 7px 9px;
     background: transparent;
-    color: rgba(255, 255, 255, .75);
+    color: var(--text-secondary);
     font-size: 11px;
 }
 
 .data-type-select option {
-    color: #281132;
-    background: #fffaf1;
+    color: var(--text-primary);
+    background: var(--white);
 }
 
 .btn {
@@ -293,15 +307,11 @@ select {
     gap: 7px;
     white-space: nowrap;
     padding: 8px 11px;
-    border: 1px solid rgba(255, 255, 255, .30);
+    border: 1px solid var(--glass-border);
     border-radius: 10px;
-    color: rgba(255, 255, 255, .65);
+    color: var(--text-secondary);
     font-size: 11px;
-}
-
-[data-theme="dark"] .status-pill {
-    border: var(--accent-sungold-soft);
-
+    background: var(--glass-bg);
 }
 
 .status-dot {
@@ -334,9 +344,9 @@ select {
 }
 
 .header .icon-btn {
-    border-color: rgba(255, 255, 255, .13);
-    background: rgba(255, 255, 255, .07);
-    color: rgba(255, 255, 255, .8);
+    border-color: var(--glass-border);
+    background: var(--glass-bg);
+    color: var(--text-secondary);
 }
 
 .icon-btn:hover:not(:disabled) {
@@ -370,7 +380,7 @@ html[data-theme="dark"] .icon-moon {
     position: fixed;
     z-index: 100;
     right: 28px;
-    top: 108px;
+    top: 88px;
     width: min(360px, calc(100% - 32px));
     display: flex;
     gap: 12px;
@@ -473,7 +483,7 @@ html[data-theme="dark"] .icon-moon {
     padding: 4px;
     border: 1px solid var(--glass-border);
     border-radius: 11px;
-    background: rgba(255, 255, 255, .4);
+    background: var(--glass-bg);
 }
 
 .range-btn {
@@ -502,7 +512,6 @@ html[data-theme="dark"] .icon-moon {
     background: var(--glass-bg);
     box-shadow: var(--glass-shadow);
     backdrop-filter: blur(20px) saturate(140%);
-
 }
 
 .glass-panel {
@@ -557,7 +566,6 @@ html[data-theme="dark"] .icon-moon {
     background: var(--accent-purple-soft);
     color: var(--accent-purple);
 }
-
 
 .kpi-icon.sungold,
 .kpi-icon.orange {
@@ -901,41 +909,36 @@ html[data-theme="dark"] .icon-moon {
     display: none !important;
 }
 
+/* =========================================
+   RESPONSIVE UPDATES FOR SLEEK HEADER
+   ========================================= */
 @media (max-width: 1050px) {
-    .header {
-        padding-inline: 18px;
+    .header-inner {
+        padding: 0 18px;
     }
-
     .brand-sub,
     .status-pill {
         display: none;
     }
-
     .data-link {
         width: min(610px, 65vw);
     }
-
     .main {
         padding-inline: 18px;
     }
-
     .kpi-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-
     .charts-row {
         grid-template-columns: 1fr;
     }
-
     .charts-row>.card:last-child {
         display: grid;
         grid-template-columns: 1fr 1fr;
     }
-
     .charts-row>.card:last-child .card-head {
         grid-column: 1 / -1;
     }
-
     .legend {
         align-content: center;
         padding-right: 24px;
@@ -944,102 +947,77 @@ html[data-theme="dark"] .icon-moon {
 
 @media (max-width: 720px) {
     .header {
-        position: relative;
-        padding: 12px 12px 0;
+        height: auto;
+        min-height: 58px;
     }
-
     .header-inner {
         flex-wrap: wrap;
         padding: 12px;
-        border-radius: 15px;
         gap: 10px;
     }
-
     .brand {
         flex: 1;
     }
-
     .header-actions {
         width: 100%;
         order: 2;
     }
-
     .data-link {
         width: 100%;
     }
-
     .data-type-select {
         display: none;
     }
-
-    .header-actions .status-pill {
-        display: none;
-    }
-
     .main {
         padding: 50px 12px 18px;
     }
-
     .section-header {
         align-items: flex-start;
         flex-direction: column;
     }
-
     .range-picker {
         width: 100%;
     }
-
     .range-btn {
         flex: 1;
     }
-
     .kpi-grid {
         grid-template-columns: 1fr 1fr;
         gap: 10px;
     }
-
     .kpi-card {
         min-height: 132px;
         padding: 14px;
     }
-
     .kpi-value {
         font-size: 23px;
     }
-
     .charts-row {
         gap: 12px;
     }
-
     .charts-row>.card:last-child {
         display: block;
     }
-
     .chart-wrap {
         height: 270px;
         padding-inline: 10px;
     }
-
     .chart-wrap-sm {
         height: 220px;
     }
-
     .legend {
         padding-inline: 16px;
     }
-
     .table-head {
         align-items: flex-start;
         flex-direction: column;
     }
-
     .search-input {
         width: 100%;
     }
-
     .status-toast {
         right: 16px;
-        top: 16px;
+        top: 72px;
     }
 }
 
@@ -1047,19 +1025,15 @@ html[data-theme="dark"] .icon-moon {
     .brand-sub {
         display: block;
     }
-
     .data-link-icon {
         display: none;
     }
-
     .btn {
         padding-inline: 12px;
     }
-
     .kpi-grid {
         grid-template-columns: 1fr;
     }
-
     .kpi-card {
         min-height: 125px;
     }
@@ -1069,7 +1043,6 @@ html[data-theme="dark"] .icon-moon {
     html {
         scroll-behavior: auto;
     }
-
     *,
     *::before,
     *::after {
@@ -1077,7 +1050,6 @@ html[data-theme="dark"] .icon-moon {
         animation-iteration-count: 1 !important;
         transition-duration: .01ms !important;
     }
-
     .reveal {
         opacity: 1;
         transform: none;
@@ -1090,7 +1062,6 @@ html[data-theme="dark"] .icon-moon {
         --text-secondary: #514657;
         --text-muted: #625769;
     }
-
     .glass-panel,
     .kpi-card {
         backdrop-filter: none;
@@ -1098,43 +1069,22 @@ html[data-theme="dark"] .icon-moon {
     }
 }
 
-/* Natural hierarchy refresh */
+/* =========================================
+   NATURAL HIERARCHY REFRESH
+   ========================================= */
 body::before {
     display: none;
-}
-
-.header {
-    padding: 0;
-    background: var(--accent-purple-strong);
-    border-bottom: 1px solid rgba(255, 255, 255, .12);
-}
-
-.header-inner {
-    max-width: 1360px;
-    min-height: 64px;
-    padding: 10px 22px;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-    backdrop-filter: none;
 }
 
 .brand-icon {
     width: 34px;
     height: 34px;
     border-radius: 8px;
-    background: rgba(255, 255, 255, .09);
+    background: var(--accent-purple-soft);
 }
 
 .header-actions {
     gap: 8px;
-}
-
-.status-pill {
-    padding: 7px 10px;
-    border-color: rgba(255, 255, 255, .1);
-    background: rgba(255, 255, 255, .05);
 }
 
 .main {
@@ -1166,7 +1116,7 @@ body::before {
     padding: 14px 16px;
     border: 1px solid var(--glass-border);
     border-radius: 12px;
-    background: rgba(255, 255, 255, .46);
+    background: var(--glass-bg);
 }
 
 html[data-theme="dark"] .source-toolbar {
@@ -1293,7 +1243,6 @@ html[data-theme="dark"] .source-toolbar {
     color: rgba(167, 118, 196, 0.493);
 }
 
-
 .kpi-card:first-child .kpi-label {
     color: rgba(255, 250, 241, .64);
 }
@@ -1368,57 +1317,43 @@ html[data-theme="dark"] .source-toolbar {
 }
 
 @media (max-width: 1050px) {
-    .header {
-        padding: 0;
-    }
-
     .brand-sub,
     .status-pill {
         display: flex;
     }
-
     .main {
         padding-inline: 18px;
     }
-
     .source-toolbar {
         grid-template-columns: minmax(160px, .55fr) minmax(400px, 1.45fr);
     }
-
     .charts-row {
         grid-template-columns: 1fr;
     }
-
     .charts-row .chart-wrap {
         height: 340px;
     }
-
     .kpi-grid {
         grid-template-columns: 1.5fr repeat(3, 1fr);
         grid-template-rows: 132px;
     }
-
     .kpi-card:first-child,
     .kpi-card:nth-child(4) {
         grid-column: auto;
         display: block;
     }
-
     .kpi-card:nth-child(4) .kpi-head,
     .kpi-card:nth-child(4) .kpi-label,
     .kpi-card:nth-child(4) .kpi-value {
         margin-top: revert;
     }
-
     .kpi-card:nth-child(4) .kpi-label {
         margin-top: 14px;
     }
-
     .kpi-card:nth-child(4) .kpi-value {
         margin-top: 4px;
         font-size: 25px;
     }
-
     .insight-row {
         grid-template-columns: 300px minmax(0, 1fr);
     }
@@ -1429,35 +1364,28 @@ html[data-theme="dark"] .source-toolbar {
         grid-template-columns: 1fr;
         gap: 10px;
     }
-
     .kpi-grid {
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: auto;
     }
-
     .kpi-card:first-child {
         grid-column: 1 / -1;
     }
-
     .kpi-card:nth-child(4) {
         grid-column: 1 / -1;
         display: grid;
     }
-
     .insight-row {
         grid-template-columns: 1fr;
     }
-
     .insight-row>.card:first-child {
         display: grid;
         grid-template-columns: minmax(240px, .8fr) 1fr;
         align-items: center;
     }
-
     .insight-row>.card:first-child .card-head {
         grid-column: 1 / -1;
     }
-
     .insight-row .legend {
         padding-right: 20px;
     }
@@ -1466,62 +1394,48 @@ html[data-theme="dark"] .source-toolbar {
 @media (max-width: 720px) {
     .header {
         position: sticky;
-        padding: 0;
     }
-
     .header-inner {
         min-height: 58px;
         padding: 9px 12px;
         flex-wrap: nowrap;
     }
-
     .header-actions {
         width: auto;
         order: initial;
     }
-
     .header-actions .status-pill {
         display: none;
     }
-
     .brand-sub {
         display: none;
     }
-
     .main {
         padding: 34px 12px 18px;
     }
-
     .section-header {
         align-items: flex-start;
         margin-bottom: 18px;
     }
-
     .source-intro {
         display: none;
     }
-
     .source-toolbar {
         display: block;
         padding: 8px;
     }
-
     .data-link {
         width: 100%;
     }
-
     .data-type-select {
         display: none;
     }
-
     .charts-row .chart-wrap {
         height: 285px;
     }
-
     .insight-row>.card:first-child {
         display: block;
     }
-
     .insight-row .legend {
         grid-template-columns: 1fr 1fr;
         padding-inline: 16px;
@@ -1532,19 +1446,15 @@ html[data-theme="dark"] .source-toolbar {
     .brand-sub {
         display: none;
     }
-
     .kpi-grid {
         grid-template-columns: 1fr 1fr;
     }
-
     .kpi-card {
         min-height: 125px;
     }
-
     .kpi-card:first-child {
         min-height: 140px;
     }
-
     .kpi-card:nth-child(4) {
         min-height: 78px;
     }
