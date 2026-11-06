@@ -154,19 +154,7 @@ select {
 }
 
 .header-inner {
-    max-width: 1440px;
-    min-height: 74px;
-    margin: auto;
-    padding: 12px 14px 12px 18px;
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    border: 0 4px 16px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
-    border-radius: 18px;
-    background: rgba(57, 19, 79, .93);
-    color: #fffaf1;
-    box-shadow: 0 16px 45px rgba(42, 15, 57, .18);
-    backdrop-filter: blur(20px) saturate(130%);
+    padding: 10px 24px; box-shadow: var(--shadow-lg); border: 2px solid var(--border)
 }
 
 .brand {
