@@ -140,10 +140,17 @@ select {
 }
 
 .header {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    padding: 18px 28px 0;
+    position: fixed; top: 20px; 
+    left: 50%; transform: translateX(-50%);
+    z-index: 1000; display: flex; 
+    align-items: center; gap: 2rem;
+    padding: 12px 28px; 
+    background: #e9c078;
+    backdrop-filter: blur(13px); 
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 0, 0, 0.08); 
+    border-radius: 50px;
+    box-shadow:0 4px 16px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
 .header-inner {
@@ -154,7 +161,7 @@ select {
     display: flex;
     align-items: center;
     gap: 24px;
-    border: 1px solid rgba(255, 255, 255, .18);
+    border: 0 4px 16px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
     border-radius: 18px;
     background: rgba(57, 19, 79, .93);
     color: #fffaf1;
